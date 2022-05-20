@@ -50,7 +50,9 @@ def multi_band(): #待修正
     
 
 def merge_test(path): #正常運作
-    ds=gdal.Open(path)
+    #print('in merge_test!!')
+    #print(type(path))
+    ds=gdal.Open(str(path))
     num=ds.RasterCount
     im_width = ds.RasterXSize
     im_height = ds.RasterYSize
@@ -64,8 +66,8 @@ def merge_test(path): #正常運作
     #print(band.shape)
     #print(band2.shape)
     #print(band3.shape)
-    #merge_arr = np.concatenate((band1, band2, band3), axis=0) # 結合三個波段(error)
-    merge_arr = np.array([band1, band2, band3]) # 結合三個波段 (大概, 待修正)
+    #merge_arr = np.concatenate((band, band2, band3), axis=0) # 結合三個波段(error)
+    merge_arr = np.stack([band, band2, band3], axis=2) # 結合三個波段 (大概, 待修正)
     return merge_arr
     ############################################################################################################ 
     ##以上為輸出numpy部分 以下為輸出tif檢驗部分
@@ -93,9 +95,25 @@ def merge_test(path): #正常運作
     del out_ds
     '''
 
+def ran_merge_test():
+    band = np.random.randint(low=0, high=256, size=(256, 256))
+    band2 = np.random.randint(low=0, high=256, size=(256, 256))
+    band3 = np.random.randint(low=0, high=256, size=(256, 256))
+    #print(band3.ndim)
+    #print(band3.shape)
+    merge_arr = np.stack([band, band2, band3], axis=2)
+    #print(merge_arr)
+    #print(merge_arr.ndim)
+    #print(merge_arr.shape)
+    return merge_arr
+    
+    
+
 def main():
-    merge_test('000000020.tif')
+    #merge_test('000000020.tif')
     #multi_band()
+    a = ran_merge_test()
+    #print(a)
 
 if __name__ == "__main__":
     main()
