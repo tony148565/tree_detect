@@ -78,20 +78,24 @@ def process_ds_and_label(x, y):
     #data = data.map(lambda x: tf.py_func(load_tif_file, [x], [tf.string])) # 利用 load_preprocess_image 轉換資料型態 路徑轉成 tensor 
     label = tf.data.Dataset.from_tensor_slices(y) # 將 y 轉成 tf.dataset 型態
     dataset = tf.data.Dataset.zip((data, label)) # 將 data 和 label 整合成一個 dataset
-    #print(dataset)
+    print(dataset)
     return dataset
+
+#def save_dataset(dataset):
 
 
 def call():
-    train_x, train_y, label_dict = read_img("./4band_256_test_1/train_set/")
+    print('in load dataset!!')
+    train_x, train_y, label_dict = read_img("./實驗0526_8band/實驗二/train_set/")
     train_count = len(train_x)
     #print('train count is:')
-    print(train_count)
-    test_x, test_y, label_dict = read_img("./4band_256_test_1/test_set/")
+    #print(train_count)
+    test_x, test_y, label_dict = read_img("./實驗0526_8band/實驗二/test_set/")
     test_count = len(test_x)
-    val_x, val_y, label_dict = read_img("./4band_256_test_1/validation_set/")
+    val_x, val_y, label_dict = read_img("./實驗0526_8band/實驗二/validation_set/")
     val_count = len(val_x)
     
+    print('read image complete!!')
     #print(train_x)
     dataset_train = process_ds_and_label(train_x, train_y)
     #print(dataset_train)

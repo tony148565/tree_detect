@@ -59,11 +59,11 @@ def process_ds_and_label(x, y):
 
 
 def call():
-    train_x, train_y, label_dict = read_img("./PetImages/train_set/")
+    train_x, train_y, label_dict = read_img("./2022/train/")
     train_count = len(train_x)
-    test_x, test_y, label_dict = read_img("./PetImages/test_set/")
+    test_x, test_y, label_dict = read_img("./2022/test/")
     test_count = len(test_x)
-    val_x, val_y, label_dict = read_img("./PetImages/validation_set/")
+    val_x, val_y, label_dict = read_img("./2022/vali/")
     val_count = len(val_x)
     
     dataset_train = process_ds_and_label(train_x, train_y)
@@ -81,7 +81,7 @@ def call():
     #val_dataset=val_dataset.batch(BATCH_SIZE)
     #test_dataset=test_dataset.batch(BATCH_SIZE)
     
-    return dataset_train, dataset_test, dataset_val, train_count, test_x, val_count
+    return dataset_train, dataset_test, dataset_val, train_count, test_count, val_count
     
 
 def main():

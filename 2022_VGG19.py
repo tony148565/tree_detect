@@ -332,7 +332,19 @@ test_dataset=test_dataset.batch(BATCH_SIZE)
 
 keras=tf.keras
 layers=tf.keras.layers
-conv_base=keras.applications.VGG19(weights='imagenet',include_top=False)
+#conv_base=keras.applications.VGG19(weights='imagenet',include_top=False) # original version
+
+'''
+# modify version1
+input0 = keras.Input(shape=(224, 224, 3), name="img0")
+input1 = keras.Input(shape=(224, 224, 3), name="img1")
+input2 = keras.Input(shape=(224, 224, 3), name="img2")
+concate_input = layers.Concatenate()([input0, input1, input2])
+input = layers.Conv2D(3, (3, 3), padding='same', activation="relu")(concate_input)
+conv_base=keras.applications.VGG19(weights=None,include_top=False, input_tensor = input)
+'''
+# modify version2
+conv_base=keras.applications.VGG19(weights=None,include_top=False, input_shape=(256, 256, 8)) # original version
 conv_base.summary()
 
 
@@ -351,6 +363,8 @@ model.add(layers.Dense(9,activation='softmax'))
 
 #希望网络里面的权重不要动 把卷积积设置为不可训练
 conv_base.trainable=False
+
+#model = keras.Model(inputs=[input0, input1, input2])
 
 model.summary()
 
@@ -391,6 +405,8 @@ secs = (end_time - start_time) % 60
 print("VGG19 Training Time: {}:{:.2f}".format(mins, secs))
 
 f.write("VGG19 Training Time: {}:{:.2f}".format(mins, secs)+"\n")
+
+model.save('tree_vgg19_experiment.h5')
 
 # plot the training loss and accuracy
 def plot_learning_curves(history):
@@ -442,7 +458,10 @@ y_pred = np.argmax(y_pred, axis=-1)
 confmatrix = confusion_matrix(y_true, y_pred)
 
 ### 1. classification_report
-target_names = ["type01_1","type02_1","type03_2","type04_1","type05_1","type06_1","type07_1","type08_1"]
+#target_names = ["type01", 'type02', "type03", "type04", "type05", "type06", "type07", "type08", "type09"]
+#target_names = ["type01_1", "type02_1", "type_other"]
+target_names = ["type03_2", "type04_1", "type05_1", "type06_1", "type07_1", "type08_1", "type09_1"]
+#target_names = ["type03_2", "type04_1", "type05_1", "type06_1", "type07_1", "type08_1"]
 print(classification_report(y_true, y_pred, target_names=target_names))
 
 f.write(classification_report(y_true, y_pred, target_names=target_names))
@@ -453,9 +472,9 @@ pd.DataFrame(confmatrix).to_csv('./Results/2022_VGG19_Original_confusion_matrix.
 
 def ConfusionMatrixPlot(confmatrix_Input):    
     #pd.DataFrame(confmatrix_Input).to_csv('confusion_matrix.csv')
-    clsnames = np.arange(0, 8)
+    clsnames = np.arange(0, 7)
     tick_marks = np.arange(len(clsnames))
-    plt.figure(figsize=(9, 9))
+    plt.figure(figsize=(8, 8))
     plt.title('Confusion matrix of VGG19 for original images',fontsize=15,pad=10)
     iters = np.reshape([[[i, j] for j in range(len(clsnames))] for i in range(len(clsnames))], (confmatrix_Input.size, 2))
     for i, j in iters:
