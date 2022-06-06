@@ -2,6 +2,7 @@ import multi_channel
 from osgeo import gdal
 from affine import Affine
 import os
+import argparse
 
 def raster_center(raster):
     width, height = raster.RasterXSize, raster.RasterYSize
@@ -33,7 +34,7 @@ def tif_rotate(path, num):
         r = r + rotate
         print(r)
         dataset_dst.SetGeoTransform(rotate_gt(gt_affine, r, center))
-        lzw_compress(path)
+        #lzw_compress(path)
     return 'complete'
 
 def test2():
@@ -85,7 +86,12 @@ def lzw_compress(data):
         dst.write(rasterdata2)
 
 def main():
-    load_folder('./8band_256_8bit')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", type=str, help="輸入資料夾路徑, 路徑最後不用加\' \\ \'")
+    args = parser.parse_args()
+    path = args.path
+    #if path.endswith('/'):
+    load_folder(path)
     #tif_rotate('SP27GTIF.tif', 2)
     #test2()
     
