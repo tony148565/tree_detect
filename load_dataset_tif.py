@@ -86,13 +86,14 @@ def process_ds_and_label(x, y):
 
 def call():
     print('in load dataset!!')
-    train_x, train_y, label_dict = read_img("./實驗0526_8band/實驗二/train_set/")
+    #os.environ['PROJ_LIB'] = r'C:\Program Files\GDAL\projlib'
+    train_x, train_y, label_dict = read_img("./8band_256_8bit_3/train_set/")
     train_count = len(train_x)
     #print('train count is:')
     #print(train_count)
-    test_x, test_y, label_dict = read_img("./實驗0526_8band/實驗二/test_set/")
+    test_x, test_y, label_dict = read_img("./8band_256_8bit_3/test_set/")
     test_count = len(test_x)
-    val_x, val_y, label_dict = read_img("./實驗0526_8band/實驗二/validation_set/")
+    val_x, val_y, label_dict = read_img("./8band_256_8bit_3/validation_set/")
     val_count = len(val_x)
     
     print('read image complete!!')
