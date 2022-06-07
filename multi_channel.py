@@ -52,11 +52,13 @@ def multi_band(): #待修正
 def merge_test(path): #正常運作
     ds=gdal.Open(path)
     num=ds.RasterCount
+    #print(num)
     im_width = ds.RasterXSize
     im_height = ds.RasterYSize
     im_geotrans = ds.GetGeoTransform()
+    #print(im_geotrans)
     im_proj = ds.GetProjection()
-    
+    #print(im_proj)
     #band=ds.GetRasterBand(1).ReadAsArray() # 選擇的波段1
     #band1=ds.GetRasterBand(1) #得到band資訊 (輸出圖片用)
     #band2=ds.GetRasterBand(2).ReadAsArray() # 選擇的波段2
