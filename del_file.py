@@ -31,21 +31,38 @@ def find_smaller_folder(path):
     #print(rate_list)
     return path_list, rate_list
     
-    
+def quantity(path, num):
+    files = os.listdir(path)
+    filenumber = len(files)
+    picknumber = filenumber - num
+    print(path)
+    if picknumber > 0:
+        sample = random.sample(files, picknumber)
+        for file in sample:
+            os.remove(path + '/' + file)
+    else:
+        print("folder skip!! data amount is smaller than picknumber !!")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("path", type=str, help="輸入資料夾路徑")
+    parser.add_argument("q", type=int, help="輸入縮減數量")
     args = parser.parse_args()
+    
     path = args.path
+    num = args.q
     if not path.endswith('/'):
         path = path + '/'
     path_list, rate_list = find_smaller_folder(path)
     
-    print(path_list)
-    print(rate_list)
-    
-    for p, r in zip(path_list, rate_list):
-        rand_del_file(p, r)
+    #print(path_list)
+    #print(rate_list)
+    if num == 0:
+        for p, r in zip(path_list, rate_list):
+            rand_del_file(p, r)
+    else:
+        for p in path_list:
+            quantity(p, num)
     print('hello python')
     
 
